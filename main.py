@@ -4,12 +4,13 @@ from PyQt5 import uic
 
 from PyQt5.QtGui import QColor, QPainter
 from PyQt5.QtWidgets import QApplication, QWidget
+from UI import Ui_Form
 
 
-class MyPillow(QWidget):
+class MyPillow(QWidget, Ui_Form):
     def __init__(self):
         super().__init__()
-        uic.loadUi("UI.ui", self)
+        self.setupUi(self)
         self.initUI()
 
     def initUI(self):
@@ -22,7 +23,7 @@ class MyPillow(QWidget):
             painter = QPainter()
             painter.begin(self)
             for obj in self.objects:
-                painter.setBrush(QColor(255, 255, 0))
+                painter.setBrush(QColor(obj[3], obj[4], obj[5]))
                 painter.drawEllipse(obj[0], obj[1], obj[2], obj[2])
             x, y, r = randint(1, 700), randint(1, 400), randint(1, 300)
             self.draw_ellipse(painter, x, y, r)
@@ -33,10 +34,11 @@ class MyPillow(QWidget):
         self.do_paint = True
         self.update()
 
-    def draw_ellipse(self, painter, x, y, r):
-        painter.setBrush(QColor(255, 255, 0))
-        self.objects.append((x, y, r))
-        painter.drawEllipse(x, y, r, r)
+    def draw_ellipse(self, painter, x, y, rad):
+        r, g, b = randint(0, 255), randint(0, 255), randint(0, 255)
+        painter.setBrush(QColor(r, g, b))
+        self.objects.append((x, y, rad, r, g, b))
+        painter.drawEllipse(x, y, rad, rad)
 
 
 def except_hook(cls, exception, traceback):
